@@ -1,18 +1,24 @@
 package main
 
 import (
-	"io/ioutil"
+	"flag"
 	"log"
+	"os"
 	"path/filepath"
 
 	"github.com/Kagami/go-face"
 )
 
 func main() {
-	getAverageFaceDescription("testdata", `face-images`)
+	var imgDir string
+	var modelDir string
+	flag.StringVar(&imgDir, "i", `face-images`, "图片文件夹路径")
+	flag.StringVar(&modelDir, "m", `testdata`, "模型文件夹路径")
+	flag.Parse()
+	getAverageFaceDescription(modelDir, imgDir)
 }
 
-//从同一个人的多张图片中识别人脸并计算出平均的人脸特征值，每个图片只能有一张脸。
+// 从同一个人的多张图片中识别人脸并计算出平均的人脸特征值，每个图片只能有一张脸。
 func getAverageFaceDescription(modelDir string, faceImgDir string) {
 	modelsPath := filepath.Join(modelDir, "models")
 
@@ -23,7 +29,7 @@ func getAverageFaceDescription(modelDir string, faceImgDir string) {
 	}
 	defer rec.Close()
 
-	imgDir, err := ioutil.ReadDir(faceImgDir)
+	imgDir, err := os.ReadDir(faceImgDir)
 	if err != nil {
 		log.Fatal(err)
 	}

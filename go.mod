@@ -1,4 +1,4 @@
-module generate-face-128D-tools
+module generate-face-128
 
 go 1.18
 
